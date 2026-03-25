@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowRight, ChevronLeft, ChevronRight, Wrench } from "lucide-react";
+import { Wrench, Sparkles, ArrowRight } from "lucide-react";
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -23,7 +23,7 @@ export default function Home({ onNavigate }: HomeProps) {
       id: "performance",
       title: "Performance Tuning",
       description: "ECU remapping and titanium exhaust systems.",
-      image: "https://i.ibb.co/spy50DL8/PHOTO-2025-09-26-19-34-57-2.jpg"
+      image: "https://iili.io/qCdz1V4.jpg"
     },
     {
       id: "electronics",
@@ -46,9 +46,9 @@ export default function Home({ onNavigate }: HomeProps) {
       image: "https://i.ibb.co/hxFwQN14/PHOTO-2025-09-26-19-35-00.jpg"
     },
     {
-      title: "Titanium Exhaust System",
-      features: ["Ultralight Grade 5 Titanium", "Valvetronic Sound Control", "Dyno-Tested Performance Gain"],
-      image: "https://i.ibb.co/spy50DL8/PHOTO-2025-09-26-19-34-57-2.jpg"
+      title: "Stage 1 Performance Tuning",
+      features: ["Code 6 ECU Remap", "145bhp / 250Nm Output", "Wind Booster Throttle Control"],
+      image: "https://iili.io/qCdz1V4.jpg"
     }
   ];
 
@@ -90,6 +90,44 @@ export default function Home({ onNavigate }: HomeProps) {
         </div>
       </section>
 
+      {/* AI Lab Promo */}
+      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+        <div className="glass-panel rounded-3xl p-12 border border-white/5 flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
+          <div className="absolute top-0 right-0 size-96 bg-primary/10 blur-[100px] -z-10"></div>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-6">
+              <Sparkles className="text-primary" size={20} />
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-primary block">New Feature</span>
+            </div>
+            <h3 className="text-4xl font-bold mb-6 italic uppercase">AI Design <span className="text-primary">Lab</span></h3>
+            <p className="text-slate-400 mb-8 max-w-md leading-relaxed">
+              Experience the future of automotive design. Use our generative AI to visualize custom body kits, paint jobs, and performance setups in seconds.
+            </p>
+            <button 
+              onClick={() => onNavigate("ai-lab")}
+              className="group flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-primary hover:text-white transition-colors"
+            >
+              Enter the Lab <ArrowRight className="group-hover:translate-x-2 transition-transform" size={18} />
+            </button>
+          </div>
+          <div className="flex-1 relative">
+            <div className="aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+              <img 
+                src="https://i.ibb.co/wrBKkFdz/PHOTO-2025-09-26-19-35-12.jpg" 
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                alt="AI Design concept"
+              />
+            </div>
+            <div className="absolute -bottom-6 -right-6 glass-panel p-4 rounded-xl border border-white/10 animate-bounce">
+              <div className="flex items-center gap-2">
+                <div className="size-2 rounded-full bg-green-500"></div>
+                <span className="text-[10px] font-bold uppercase">AI Engine Online</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Categories Section */}
       <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
         <div className="mb-12 flex items-end justify-between">
@@ -106,7 +144,7 @@ export default function Home({ onNavigate }: HomeProps) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
               viewport={{ once: true }}
-              className="group relative h-[400px] overflow-hidden rounded-xl bg-charcoal cursor-pointer"
+              className="group relative aspect-video overflow-hidden rounded-xl bg-charcoal"
             >
               {cat.image ? (
                 <img 
@@ -124,9 +162,6 @@ export default function Home({ onNavigate }: HomeProps) {
               <div className="absolute bottom-0 p-8">
                 <h4 className="text-xl font-bold">{cat.title}</h4>
                 <p className="mt-2 text-sm text-slate-400">{cat.description}</p>
-                <button className="mt-6 flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-4 transition-all">
-                  EXPLORE <ArrowRight className="w-4 h-4" />
-                </button>
               </div>
             </motion.div>
           ))}
@@ -138,14 +173,6 @@ export default function Home({ onNavigate }: HomeProps) {
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="flex items-center justify-between mb-12">
             <h3 className="text-3xl font-bold">Featured Components</h3>
-            <div className="flex gap-4">
-              <button className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 hover:border-primary transition-colors">
-                <ChevronLeft />
-              </button>
-              <button className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 hover:border-primary transition-colors">
-                <ChevronRight />
-              </button>
-            </div>
           </div>
           <div className="no-scrollbar flex gap-8 overflow-x-auto pb-8">
             {featured.map((item, idx) => (
@@ -173,15 +200,6 @@ export default function Home({ onNavigate }: HomeProps) {
                     </li>
                   ))}
                 </ul>
-                <button 
-                  className={`mt-8 w-full rounded-lg py-3 text-sm font-bold tracking-wider transition-all ${
-                    item.primary 
-                      ? "bg-primary hover:shadow-[0_0_20px_rgba(43,140,238,0.4)]" 
-                      : "bg-white/5 border border-white/10 hover:bg-white/10"
-                  }`}
-                >
-                  VIEW DETAILS
-                </button>
               </motion.div>
             ))}
           </div>

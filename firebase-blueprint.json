@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user ID" },
+        "email": { "type": "string", "format": "email", "description": "User's email address" },
+        "displayName": { "type": "string", "description": "User's display name" },
+        "photoURL": { "type": "string", "description": "User's profile photo URL" },
+        "role": { "type": "string", "enum": ["user", "admin"], "description": "User's role" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user profile was created" }
+      },
+      "required": ["uid", "email", "displayName"]
+    },
+    "Build": {
+      "title": "Build",
+      "description": "A custom car build configuration",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "ID of the user who owns this build" },
+        "make": { "type": "string", "description": "Vehicle make" },
+        "model": { "type": "string", "description": "Vehicle model" },
+        "year": { "type": "string", "description": "Vehicle year" },
+        "upgrades": { "type": "array", "items": { "type": "string" }, "description": "Selected upgrades" },
+        "status": { "type": "string", "enum": ["draft", "submitted", "in-progress", "completed"], "description": "Current status of the build" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the build was created" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "When the build was last updated" }
+      },
+      "required": ["userId", "make", "model", "year", "upgrades"]
+    },
+    "AIProject": {
+      "title": "AIProject",
+      "description": "AI-generated car concept or video",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "ID of the user who owns this project" },
+        "prompt": { "type": "string", "description": "The text prompt used for generation" },
+        "type": { "type": "string", "enum": ["image", "video"], "description": "Type of generation" },
+        "url": { "type": "string", "description": "URL of the generated asset" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the project was created" }
+      },
+      "required": ["userId", "prompt", "type", "url"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents"
+    },
+    "/builds/{buildId}": {
+      "schema": "Build",
+      "description": "Custom car build configurations"
+    },
+    "/ai_projects/{projectId}": {
+      "schema": "AIProject",
+      "description": "AI-generated assets"
+    }
+  }
+}

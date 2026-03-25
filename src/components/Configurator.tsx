@@ -1,7 +1,9 @@
 import { motion } from "motion/react";
-import { ArrowRight, ArrowLeft, CheckCircle, Car, Armchair, Cpu, Star, Shield, Wrench, Gauge, User, Mail, Phone } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, ArrowLeft, CheckCircle, Car, Armchair, Cpu, Star, Shield, Wrench, Gauge, User, Mail, Phone, Loader2, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
 import { BuildData, Step } from "../types";
+import { db, auth, collection, addDoc, serverTimestamp } from "../firebase";
+import { GoogleGenAI } from "@google/genai";
 
 const carMakes = [
   "Acura", "Alfa Romeo", "Aston Martin", "Audi", "Bentley", "BMW", "Bugatti", 
@@ -19,6 +21,9 @@ interface ConfiguratorProps {
 
 export default function Configurator({ onComplete }: ConfiguratorProps) {
   const [step, setStep] = useState<Step>(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [aiAdvice, setAiAdvice] = useState<string | null>(null);
   const [buildData, setBuildData] = useState<BuildData>({
     make: "",
     model: "",
@@ -29,9 +34,39 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
     phone: ""
   });
 
-  const handleNext = () => {
-    if (step < 3) setStep((s) => (s + 1) as Step);
-    else onComplete(buildData);
+  useEffect(() => {
+    if (auth.currentUser) {
+      setBuildData(prev => ({
+        ...prev,
+        name: auth.currentUser?.displayName || "",
+        email: auth.currentUser?.email || ""
+      }));
+    }
+  }, []);
+
+  const handleNext = async () => {
+    if (step < 3) {
+      setStep((s) => (s + 1) as Step);
+    } else {
+      setIsSubmitting(true);
+      try {
+        if (auth.currentUser) {
+          await addDoc(collection(db, "builds"), {
+            userId: auth.currentUser.uid,
+            ...buildData,
+            status: "pending",
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        }
+        onComplete(buildData);
+      } catch (error) {
+        console.error("Error saving build:", error);
+        onComplete(buildData); // Still complete even if save fails for demo
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
   };
 
   const handleBack = () => {
@@ -52,6 +87,39 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
     if (step === 2) return buildData.upgrades.length > 0;
     if (step === 3) return buildData.name && buildData.email && buildData.phone;
     return false;
+  };
+
+  const getAiAdvice = async () => {
+    if (isAiLoading) return;
+    setIsAiLoading(true);
+    setAiAdvice(null);
+
+    try {
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        setAiAdvice("AI Advisor is currently offline. Please configure GEMINI_API_KEY in Settings.");
+        return;
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
+      const prompt = `As a Throttle X Automotive Specialist, analyze this build and give a short (20-30 words), punchy, professional recommendation or "vibe check".
+      Car: ${buildData.year} ${buildData.make} ${buildData.model}
+      Selected Upgrades: ${buildData.upgrades.join(", ") || "None yet"}
+      Step: ${step === 1 ? "Initial Selection" : step === 2 ? "Upgrades" : "Finalizing"}
+      Be enthusiastic and technical.`;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: prompt,
+      });
+
+      setAiAdvice(response.text || "Build looks solid. Ready for the next phase.");
+    } catch (error) {
+      console.error("AI Advisor error:", error);
+      setAiAdvice("Engineers are reviewing your specs. Looks promising!");
+    } finally {
+      setIsAiLoading(false);
+    }
   };
 
   return (
@@ -92,6 +160,27 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
               </div>
             </div>
             <div className="mt-12 pt-8 border-t border-white/10">
+              <div className="mb-4">
+                <button 
+                  onClick={getAiAdvice}
+                  disabled={isAiLoading || !buildData.make}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary/20 border border-primary/30 rounded-lg text-xs font-bold text-primary hover:bg-primary/30 transition-all disabled:opacity-50"
+                >
+                  {isAiLoading ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
+                  GET AI ADVISOR INPUT
+                </button>
+                {aiAdvice && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-3 p-3 bg-white/5 border border-white/10 rounded-lg"
+                  >
+                    <p className="text-[10px] text-slate-300 leading-relaxed italic">
+                      "{aiAdvice}"
+                    </p>
+                  </motion.div>
+                )}
+              </div>
               <p className="text-xs text-slate-400 leading-relaxed italic">
                 "Performance is not just about speed, it's about the soul of the machine."
               </p>
@@ -302,15 +391,24 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
                   </button>
                   <button 
                     onClick={handleNext}
-                    disabled={!isStepValid()}
+                    disabled={!isStepValid() || isSubmitting}
                     className={`px-10 py-4 rounded-lg font-bold flex items-center gap-2 group transition-all ${
-                      isStepValid() 
+                      isStepValid() && !isSubmitting
                         ? "bg-primary hover:bg-primary/90 shadow-[0_0_20px_rgba(43,140,238,0.3)]" 
                         : "bg-white/5 text-slate-500 cursor-not-allowed border border-white/10"
                     }`}
                   >
-                    FINISH BUILD
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="animate-spin" size={18} />
+                        SAVING...
+                      </>
+                    ) : (
+                      <>
+                        FINISH BUILD
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </button>
                 </div>
               </motion.div>

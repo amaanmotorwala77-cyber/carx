@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowRight, Shield, Cpu, CheckCircle } from "lucide-react";
+import { Shield, Cpu, CheckCircle } from "lucide-react";
 
 export default function Services() {
   const disciplines = [
@@ -57,10 +57,6 @@ export default function Services() {
             <p className="text-lg md:text-xl text-slate-400 max-w-xl mb-10 leading-relaxed">
               Where precision engineering meets automotive artistry. We redefine technical boundaries for the ultimate driving experience through surgical modification.
             </p>
-            <button className="bg-primary text-background-dark px-8 py-4 rounded font-bold tracking-wide flex items-center gap-2 group">
-              VIEW TECHNICAL SPECS
-              <ArrowRight className="transition-transform group-hover:translate-x-1" />
-            </button>
           </div>
         </div>
       </section>
@@ -85,7 +81,7 @@ export default function Services() {
                 viewport={{ once: true }}
                 className={`group bg-background-dark p-1 rounded-xl border border-white/5 hover:border-primary/50 transition-all duration-500 ${item.fullWidth ? 'lg:col-span-2' : ''}`}
               >
-                <div className={`relative overflow-hidden rounded-lg mb-6 ${item.fullWidth ? 'aspect-[21/9]' : 'aspect-[4/3]'}`}>
+                <div className={`relative overflow-hidden rounded-lg mb-6 ${item.fullWidth ? 'aspect-[21/9]' : 'aspect-video'}`}>
                   <img 
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
                     src={item.image}

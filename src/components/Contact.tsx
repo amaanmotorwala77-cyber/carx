@@ -199,7 +199,7 @@ export default function Contact() {
             >
               <MessageSquare className="text-primary" size={24} />
               <p className="text-sm text-slate-300">
-                Looking for a quick quote? Use our <span className="text-primary font-bold cursor-pointer hover:underline">Configurator</span> to get an instant estimate.
+                Looking for a quick quote? Use our <span className="text-primary font-bold">Configurator</span> to get an instant estimate.
               </p>
             </motion.div>
           </div>
