@@ -31,16 +31,23 @@ export default function Login({ onNavigate }: LoginProps) {
       onNavigate("home");
     } catch (err: any) {
       clearTimeout(timeout);
-      console.error("Login error:", err);
+      console.error("Login error details:", err);
       
-      if (err.code === "auth/popup-closed-by-user") {
+      const errorCode = err.code || "unknown";
+      const errorMessage = err.message || "An unexpected error occurred.";
+
+      if (errorCode === "auth/popup-closed-by-user") {
         setError("The login popup was closed before completion. Please try again.");
-      } else if (err.code === "auth/cancelled-popup-request") {
+      } else if (errorCode === "auth/cancelled-popup-request") {
         setError("Only one login popup can be open at a time.");
-      } else if (err.code === "auth/popup-blocked") {
+      } else if (errorCode === "auth/popup-blocked") {
         setError("The login popup was blocked by your browser. Please allow popups for this site.");
+      } else if (errorCode === "auth/unauthorized-domain") {
+        setError("This domain is not authorized for Firebase Authentication. Please ensure the current URL is added to the 'Authorized Domains' list in the Firebase Console.");
+      } else if (errorCode === "auth/operation-not-allowed") {
+        setError("Google Sign-In is not enabled in the Firebase Console. Please enable it under Authentication > Sign-in method.");
       } else {
-        setError(err.message || "An error occurred during login. Please try again.");
+        setError(`Firebase Error (${errorCode}): ${errorMessage}`);
       }
     } finally {
       setIsLoading(false);

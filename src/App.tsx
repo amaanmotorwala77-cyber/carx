@@ -8,7 +8,7 @@ import AdminDashboard from "./components/AdminDashboard";
 import Login from "./components/Login";
 import ChatBot from "./components/ChatBot";
 import Footer from "./components/Footer";
-import { auth, onAuthStateChanged, User, db, doc, getDoc, setDoc } from "./firebase";
+import { auth, onAuthStateChanged, User, db, doc, getDoc, setDoc, serverTimestamp } from "./firebase";
 import { Loader2 } from "lucide-react";
 
 export default function App() {
@@ -50,7 +50,7 @@ export default function App() {
             email: currentUser.email,
             photoURL: currentUser.photoURL,
             role: role,
-            createdAt: new Date()
+            createdAt: serverTimestamp()
           });
         } else {
           const existingData = userSnap.data();
@@ -59,7 +59,7 @@ export default function App() {
             await setDoc(userRef, { 
               ...existingData, 
               role: "admin",
-              createdAt: existingData.createdAt || new Date()
+              updatedAt: serverTimestamp()
             }, { merge: true });
           } else {
             role = existingData.role;
