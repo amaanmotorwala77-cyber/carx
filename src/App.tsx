@@ -5,6 +5,7 @@ import Configurator from "./components/Configurator";
 import Garage from "./components/Garage";
 import AIDesignLab from "./components/AIDesignLab";
 import AdminDashboard from "./components/AdminDashboard";
+import Login from "./components/Login";
 import ChatBot from "./components/ChatBot";
 import Footer from "./components/Footer";
 import { auth, onAuthStateChanged, User, db, doc, getDoc, setDoc } from "./firebase";
@@ -18,7 +19,22 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
+      console.log("Auth state changed:", currentUser?.email);
+      
+      if (!currentUser) {
+        setUser(null);
+        setIsAdmin(false);
+        setIsLoading(false);
+        return;
+      }
+
+      // Update UI immediately with what we know
+      setUser(currentUser);
+      setIsAdmin(currentUser.email === "amaanmotorwala77@gmail.com");
+      setIsLoading(false);
+
+      // Background sync with Firestore
+      try {
         const userRef = doc(db, "users", currentUser.uid);
         const userSnap = await getDoc(userRef);
         
@@ -50,13 +66,11 @@ export default function App() {
           }
         }
         
-        setUser(currentUser);
+        // Final update with correct role from Firestore if needed
         setIsAdmin(role === "admin");
-      } else {
-        setUser(null);
-        setIsAdmin(false);
+      } catch (error) {
+        console.error("Firestore sync error:", error);
       }
-      setIsLoading(false);
     });
 
     return () => unsubscribe();
@@ -65,17 +79,19 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case "home":
-        return <Home onNavigate={setCurrentPage} />;
+        return <Home onNavigate={setCurrentPage} user={user} />;
       case "configurator":
         return <Configurator onComplete={() => setCurrentPage("garage")} />;
       case "garage":
-        return user ? <Garage onNavigate={setCurrentPage} /> : <Home onNavigate={setCurrentPage} />;
+        return user ? <Garage onNavigate={setCurrentPage} /> : <Login onNavigate={setCurrentPage} />;
       case "ai-lab":
-        return user ? <AIDesignLab /> : <Home onNavigate={setCurrentPage} />;
+        return user ? <AIDesignLab /> : <Login onNavigate={setCurrentPage} />;
       case "admin":
-        return isAdmin ? <AdminDashboard /> : <Home onNavigate={setCurrentPage} />;
+        return isAdmin ? <AdminDashboard /> : <Login onNavigate={setCurrentPage} />;
+      case "login":
+        return user ? <Home onNavigate={setCurrentPage} user={user} /> : <Login onNavigate={setCurrentPage} />;
       default:
-        return <Home onNavigate={setCurrentPage} />;
+        return <Home onNavigate={setCurrentPage} user={user} />;
     }
   };
 

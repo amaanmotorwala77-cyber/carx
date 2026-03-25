@@ -48,21 +48,25 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
     if (step < 3) {
       setStep((s) => (s + 1) as Step);
     } else {
+      if (!auth.currentUser) {
+        // If not logged in, we should probably redirect to login or show a prompt
+        // For now, let's just complete the build but warn them it won't be saved
+        onComplete(buildData);
+        return;
+      }
       setIsSubmitting(true);
       try {
-        if (auth.currentUser) {
-          await addDoc(collection(db, "builds"), {
-            userId: auth.currentUser.uid,
-            ...buildData,
-            status: "pending",
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-          });
-        }
+        await addDoc(collection(db, "builds"), {
+          userId: auth.currentUser.uid,
+          ...buildData,
+          status: "pending",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
         onComplete(buildData);
       } catch (error) {
         console.error("Error saving build:", error);
-        onComplete(buildData); // Still complete even if save fails for demo
+        onComplete(buildData);
       } finally {
         setIsSubmitting(false);
       }

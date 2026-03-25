@@ -3,9 +3,10 @@ import { Wrench, Sparkles, ArrowRight } from "lucide-react";
 
 interface HomeProps {
   onNavigate: (page: string) => void;
+  user: any;
 }
 
-export default function Home({ onNavigate }: HomeProps) {
+export default function Home({ onNavigate, user }: HomeProps) {
   const categories = [
     {
       id: "interior",
@@ -87,6 +88,27 @@ export default function Home({ onNavigate }: HomeProps) {
           >
             Precision components for those who demand perfection. Explore our curated selection of high-performance modifications.
           </motion.p>
+          {!user && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mt-10 flex gap-4"
+            >
+              <button 
+                onClick={() => onNavigate("login")}
+                className="rounded-lg bg-white px-8 py-3 text-sm font-bold text-black hover:bg-slate-100 transition-colors"
+              >
+                SIGN IN
+              </button>
+              <button 
+                onClick={() => onNavigate("configurator")}
+                className="rounded-lg border border-white/20 px-8 py-3 text-sm font-bold text-white hover:bg-white/5 transition-colors"
+              >
+                EXPLORE BUILDER
+              </button>
+            </motion.div>
+          )}
         </div>
       </section>
 

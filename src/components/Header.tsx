@@ -21,12 +21,8 @@ export default function Header({ onNavigate, currentPage, user, isAdmin }: Heade
     { name: "Contact", id: "contact" },
   ];
 
-  const handleLogin = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Login error:", error);
-    }
+  const handleLogin = () => {
+    onNavigate("login");
   };
 
   const handleLogout = async () => {
