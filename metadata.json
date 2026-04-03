@@ -1,0 +1,5 @@
+{
+  "name": "AI Studio Free Tier 2",
+  "description": "Next-generation AI-powered automotive engineering and design platform.",
+  "requestFramePermissions": ["camera", "microphone"]
+}
