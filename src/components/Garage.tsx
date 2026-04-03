@@ -74,7 +74,7 @@ export default function Garage({ onNavigate }: GarageProps) {
       }
 
       const ai = new GoogleGenAI({ apiKey });
-      const prompt = `As an AI Studio Master Engineer, provide a detailed technical analysis and "Master Verdict" for this build.
+      const prompt = `As an throttleX Master Engineer, provide a detailed technical analysis and "Master Verdict" for this build.
       Vehicle: ${build.year} ${build.make} ${build.model}
       Upgrades: ${build.upgrades.join(", ")}
       Status: ${build.status}

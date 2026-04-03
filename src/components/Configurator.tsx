@@ -87,7 +87,7 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
                     </ul>
                   </div>
                   <p>Our engineers will review your configuration and reach out shortly.</p>
-                  <p style="font-size: 12px; color: #666;">This is an automated notification from your AI Studio dashboard.</p>
+                  <p style="font-size: 12px; color: #666;">This is an automated notification from your throttleX dashboard.</p>
                 </div>
               `
             })
@@ -139,7 +139,7 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
       }
 
       const ai = new GoogleGenAI({ apiKey });
-      const prompt = `As an AI Studio Automotive Specialist, analyze this build and give a short (20-30 words), punchy, professional recommendation or "vibe check".
+      const prompt = `As an throttleX Automotive Specialist, analyze this build and give a short (20-30 words), punchy, professional recommendation or "vibe check".
       Car: ${buildData.year} ${buildData.make} ${buildData.model}
       Selected Upgrades: ${buildData.upgrades.join(", ") || "None yet"}
       Step: ${step === 1 ? "Initial Selection" : step === 2 ? "Upgrades" : "Finalizing"}
@@ -177,7 +177,7 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
             <div>
               <span className="text-primary text-xs font-bold uppercase tracking-[0.2em] mb-2 block">Configure</span>
               <h1 className="text-3xl font-bold leading-tight mb-6 flex flex-wrap items-center gap-2">
-                AI Studio <span className="text-primary">Configurator</span>
+                throttleX <span className="text-primary">Configurator</span>
                 <span className="text-[8px] bg-primary/20 text-primary px-2 py-0.5 rounded-full border border-primary/30">FT2</span>
               </h1>
               
@@ -315,7 +315,7 @@ export default function Configurator({ onComplete }: ConfiguratorProps) {
               >
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold mb-2">Select your upgrades</h2>
-                  <p className="text-slate-400 text-sm">What parts of your vehicle need the AI Studio touch?</p>
+                  <p className="text-slate-400 text-sm">What parts of your vehicle need the throttleX touch?</p>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   {[

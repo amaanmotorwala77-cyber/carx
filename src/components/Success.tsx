@@ -39,7 +39,7 @@ export default function Success({ data, onReset }: SuccessProps) {
               Your Journey <span className="text-primary">Starts Here.</span>
             </h1>
             <p className="text-slate-400 max-w-md mx-auto leading-relaxed">
-              Thank you for choosing AI Studio. Our lead engineer will review your build request and reach out within 24-48 hours with a curated proposal.
+              Thank you for choosing throttleX. Our lead engineer will review your build request and reach out within 24-48 hours with a curated proposal.
             </p>
           </div>
 

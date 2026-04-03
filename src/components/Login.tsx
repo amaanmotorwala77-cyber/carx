@@ -84,8 +84,7 @@ export default function Login({ onNavigate }: LoginProps) {
             <Gauge size={32} />
           </div>
           <h2 className="text-3xl font-bold tracking-tight mb-2 uppercase italic flex items-center justify-center gap-3">
-            AI <span className="text-primary">Studio</span>
-            <span className="text-[10px] not-italic font-bold bg-primary/20 text-primary px-3 py-1 rounded-full tracking-widest border border-primary/30">FT2</span>
+            throttleX
           </h2>
           <p className="text-slate-400 text-sm">Precision Engineering. AI-Driven Design.</p>
         </div>

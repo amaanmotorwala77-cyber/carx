@@ -70,7 +70,7 @@ export default function Home({ onNavigate, user }: HomeProps) {
             animate={{ opacity: 1, y: 0 }}
             className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-primary flex items-center gap-3"
           >
-            AI Studio Free Tier 2
+            throttleX
             <span className="text-[8px] bg-primary/20 px-2 py-0.5 rounded-full border border-primary/30">LATEST</span>
           </motion.span>
           <motion.h2 

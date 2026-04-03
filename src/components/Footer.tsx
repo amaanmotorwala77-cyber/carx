@@ -15,8 +15,7 @@ export default function Footer({ onNavigate, onSelectKey, hasKey }: FooterProps)
             <div className="flex items-center gap-3">
               <Gauge className="text-primary w-8 h-8" />
               <h2 className="text-2xl font-bold tracking-tight uppercase flex items-center gap-3">
-                AI <span className="text-primary">STUDIO</span>
-                <span className="text-[10px] not-italic font-bold bg-primary/20 text-primary px-3 py-1 rounded-full tracking-widest border border-primary/30">FT2</span>
+                throttleX <span className="text-primary">X</span>
               </h2>
             </div>
             <p className="mt-6 max-w-sm text-slate-500">
@@ -56,7 +55,7 @@ export default function Footer({ onNavigate, onSelectKey, hasKey }: FooterProps)
           </div>
         </div>
         <div className="mt-20 border-t border-white/5 pt-8 text-xs text-slate-600">
-          <p>© 2026 AI Studio <span className="text-[10px] bg-white/5 px-1.5 py-0.5 rounded ml-1">FREE TIER 2</span> Engineering. No retail sales. Professional installation required.</p>
+          <p>© 2026 throttleX Engineering. No retail sales. Professional installation required.</p>
         </div>
       </div>
     </footer>

@@ -53,8 +53,7 @@ export default function Header({ onNavigate, currentPage, user, isAdmin, hasKey,
             <Gauge className="w-8 h-8" />
           </div>
           <h1 className="text-xl font-bold tracking-tight uppercase flex items-center gap-2">
-            AI <span className="text-primary">STUDIO</span>
-            <span className="hidden xs:inline text-[8px] bg-primary/20 text-primary px-2 py-0.5 rounded-full border border-primary/30">FT2</span>
+            throttleX <span className="text-primary">X</span>
           </h1>
         </div>
 

@@ -87,7 +87,7 @@ export default function AdminDashboard() {
         .map(([make, count]) => `${make} (${count})`)
         .join(", ");
 
-      const prompt = `As an AI Studio Business Analyst, provide a high-level executive summary of the current business state.
+      const prompt = `As an throttleX Business Analyst, provide a high-level executive summary of the current business state.
       Total Users: ${users.length}
       Total Builds: ${builds.length}
       Top Car Makes: ${topMakes || "None yet"}

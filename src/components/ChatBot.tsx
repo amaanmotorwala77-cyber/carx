@@ -18,7 +18,7 @@ export default function ChatBot({ hasKey, onSelectKey }: ChatBotProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
-    { role: "model", text: "Welcome to AI Studio. I'm your technical specialist. How can I assist with your build today?" }
+    { role: "model", text: "Welcome to throttleX. I'm your technical specialist. How can I assist with your build today?" }
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -75,7 +75,7 @@ export default function ChatBot({ hasKey, onSelectKey }: ChatBotProps) {
             chatRef.current = ai.chats.create({
               model: "gemini-2.5-flash",
               config: {
-                systemInstruction: "You are an AI Studio Specialist, an expert in high-end automotive modifications. You help users with technical questions about BMW F90 conversions, i20 projects, ECU tuning, bespoke interiors, and performance engineering. Be professional, technical, and enthusiastic about cars. If users ask about pricing or specific quotes, refer them to the Configurator or Contact page. Keep your responses concise and focused on automotive excellence.",
+                systemInstruction: "You are an throttleX Specialist, an expert in high-end automotive modifications. You help users with technical questions about BMW F90 conversions, i20 projects, ECU tuning, bespoke interiors, and performance engineering. Be professional, technical, and enthusiastic about cars. If users ask about pricing or specific quotes, refer them to the Configurator or Contact page. Keep your responses concise and focused on automotive excellence.",
               },
             });
         } catch (e) {
@@ -195,7 +195,7 @@ export default function ChatBot({ hasKey, onSelectKey }: ChatBotProps) {
                   </button>
                 </div>
                 <p className="text-[8px] text-slate-500 uppercase tracking-tight leading-relaxed">
-                  If you are using a Shared or Deployed link, please set your <code className="bg-white/10 px-0.5 rounded text-primary">GEMINI_API_KEY</code> in the environment variables via the Settings menu in AI Studio.
+                  If you are using a Shared or Deployed link, please set your <code className="bg-white/10 px-0.5 rounded text-primary">GEMINI_API_KEY</code> in the environment variables via the Settings menu in throttleX.
                 </p>
               </div>
             )}
@@ -247,7 +247,7 @@ export default function ChatBot({ hasKey, onSelectKey }: ChatBotProps) {
                 </button>
               </div>
               <p className="text-[9px] text-center text-slate-600 mt-3 uppercase tracking-widest">
-                AI Assistant • AI Studio <span className="text-[8px] bg-primary/20 px-1.5 py-0.5 rounded ml-1">FT2</span>
+                AI Assistant • throttleX
               </p>
             </div>
           </motion.div>

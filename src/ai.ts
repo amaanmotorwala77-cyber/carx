@@ -15,7 +15,7 @@ export const getApiKey = (): string => {
 export const createAI = () => {
   const apiKey = getApiKey();
   if (!apiKey) {
-    throw new Error("Gemini API Key is missing. Please set it in AI Studio Settings or select it.");
+    throw new Error("Gemini API Key is missing. Please set it in throttleX Settings or select it.");
   }
   return new GoogleGenAI({ apiKey });
 };

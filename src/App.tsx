@@ -72,7 +72,7 @@ export default function App() {
       const finalHasKey = selected || hasEnvKey || hasServerKey;
       
       if (finalHasKey) {
-        console.log("AI Studio: Key detected!", {
+        console.log("throttleX: Key detected!", {
           selected,
           hasEnvKey,
           hasServerKey,
@@ -187,12 +187,12 @@ export default function App() {
           if (activeUser.email) {
             sendEmail(
               activeUser.email,
-              "Welcome to AI Studio Free Tier 2!",
+              "Welcome to throttleX!",
               `
               <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #0a0a0a; color: #ffffff; border-radius: 20px; border: 1px solid #2b8cee;">
                 <h1 style="color: #2b8cee; text-transform: uppercase; font-style: italic;">Welcome to the Future of Automotive Design</h1>
                 <p>Hello ${activeUser.displayName || 'Engineer'},</p>
-                <p>Your account at <strong>AI Studio Free Tier 2</strong> has been successfully activated. You now have access to our next-generation generative engineering tools.</p>
+                <p>Your account at <strong>throttleX</strong> has been successfully activated. You now have access to our next-generation generative engineering tools.</p>
                 <div style="background-color: #1a1a1a; padding: 15px; border-radius: 10px; margin: 20px 0;">
                   <h3 style="color: #2b8cee; margin-top: 0;">What's Next?</h3>
                   <ul style="padding-left: 20px;">
@@ -201,7 +201,7 @@ export default function App() {
                     <li>Manage your fleet in the <strong>Garage</strong>.</li>
                   </ul>
                 </div>
-                <p style="font-size: 12px; color: #666;">This is an automated notification from your AI Studio dashboard.</p>
+                <p style="font-size: 12px; color: #666;">This is an automated notification from your throttleX dashboard.</p>
               </div>
               `
             );
@@ -284,7 +284,7 @@ export default function App() {
         <div className="bg-red-600 py-3 px-4 flex flex-col sm:flex-row items-center justify-center gap-4 text-[11px] font-bold uppercase tracking-widest z-[100] shadow-xl">
           <div className="flex items-center gap-2 text-white text-center">
             <AlertCircle size={16} className="text-white animate-pulse shrink-0" />
-            <span>AI Studio <span className="bg-white/20 px-1.5 py-0.5 rounded text-[9px] mr-1">FREE TIER 2</span> Features are currently offline. Get your <a href="https://aistudio.google.com/app/apikey" target="_blank" className="underline hover:text-white/80">Free Gemini API Key</a> and select it. (If button fails, use Settings menu)</span>
+            <span>throttleX Features are currently offline. Get your <a href="https://aistudio.google.com/app/apikey" target="_blank" className="underline hover:text-white/80">Free Gemini API Key</a> and select it. (If button fails, use Settings menu)</span>
           </div>
           <button 
             onClick={handleSelectKey}
@@ -339,7 +339,7 @@ export default function App() {
                     <div>
                       <h3 className="text-sm font-bold uppercase mb-1">Build Interface</h3>
                       <p className="text-xs text-slate-400 leading-relaxed">
-                        Key selection dialog is only available inside the <span className="text-white font-bold">AI Studio Build</span> interface.
+                        Key selection dialog is only available inside the <span className="text-white font-bold">throttleX Build</span> interface.
                       </p>
                     </div>
                   </div>
@@ -351,7 +351,7 @@ export default function App() {
                     <div>
                       <h3 className="text-sm font-bold uppercase mb-1">Shared/Deployed Links</h3>
                       <p className="text-xs text-slate-400 leading-relaxed">
-                        If you are using a <span className="text-white font-bold">Shared or Deployed link</span>, please set your <code className="bg-white/10 px-1 rounded text-primary">GEMINI_API_KEY</code> in the environment variables via the <span className="text-white font-bold">Settings menu</span> in AI Studio.
+                        If you are using a <span className="text-white font-bold">Shared or Deployed link</span>, please set your <code className="bg-white/10 px-1 rounded text-primary">GEMINI_API_KEY</code> in the environment variables via the <span className="text-white font-bold">Settings menu</span> in throttleX.
                       </p>
                     </div>
                   </div>
