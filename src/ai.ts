@@ -9,7 +9,7 @@ export const getApiKey = (): string => {
          process.env.GEMINI_API_KEY || 
          process.env.API_KEY || 
          (import.meta as any).env?.VITE_GEMINI_API_KEY || 
-         "AIzaSyCeNdAqDLr8tyx05hWP1Xu-0i-2Nsnd0mM";
+         "AIzaSyCe91Yj8fAuPeGmkwCbZAcvfFAxavjggbM";
 };
 
 export const createAI = () => {
