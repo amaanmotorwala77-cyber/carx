@@ -68,7 +68,7 @@ export default function App() {
         console.error("Error fetching server config:", e);
       }
       
-      const hasEnvKey = !!(process.env.GEMINI_API_KEY || process.env.API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || "AIzaSyCeNdAqDLr8tyx05hWP1Xu-0i-2Nsnd0mM");
+      const hasEnvKey = !!(process.env.GEMINI_API_KEY || process.env.API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || "AIzaSyCe91Yj8fAuPeGmkwCbZAcvfFAxavjggbM");
       const finalHasKey = selected || hasEnvKey || hasServerKey;
       
       if (finalHasKey) {
@@ -103,7 +103,7 @@ export default function App() {
 
   const handleSelectKey = async () => {
     // Aggressive re-check before alerting
-    const hasEnvKey = !!(process.env.GEMINI_API_KEY || process.env.API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || "AIzaSyCeNdAqDLr8tyx05hWP1Xu-0i-2Nsnd0mM");
+    const hasEnvKey = !!(process.env.GEMINI_API_KEY || process.env.API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || "AIzaSyCe91Yj8fAuPeGmkwCbZAcvfFAxavjggbM");
     let selected = false;
     if (window.aistudio?.hasSelectedApiKey) {
       selected = await window.aistudio.hasSelectedApiKey();
