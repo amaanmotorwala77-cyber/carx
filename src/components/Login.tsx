@@ -33,7 +33,8 @@ export default function Login({ onNavigate }: LoginProps) {
       onNavigate("home");
     } catch (err: any) {
       console.error("Login error:", err);
-      setError("Failed to sign in. Please try again.");
+      const errMsg = err?.message || err?.code || "Unknown error";
+      setError(`Failed to sign in. Reason: ${errMsg}`);
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +51,8 @@ export default function Login({ onNavigate }: LoginProps) {
       if (err.code === "auth/popup-closed-by-user") {
         setError("Login popup was closed.");
       } else {
-        setError("Failed to sign in with Google.");
+        const errMsg = err?.message || err?.code || "Unknown error";
+        setError(`Failed to sign in with Google. Reason: ${errMsg}`);
       }
     } finally {
       setIsLoading(false);
