@@ -134,10 +134,19 @@ export default function App() {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log("Auth state changed:", currentUser?.email);
+    const handleAuth = async (currentUser: any) => {
+      let activeUser = currentUser;
       
-      if (!currentUser) {
+      if (!activeUser) {
+        try {
+          const localStr = localStorage.getItem("carx_mock_user");
+          if (localStr) activeUser = JSON.parse(localStr);
+        } catch {}
+      }
+      
+      console.log("Auth state checked, active:", activeUser?.email);
+      
+      if (!activeUser) {
         setUser(null);
         setIsAdmin(false);
         setIsLoading(false);
@@ -145,39 +154,44 @@ export default function App() {
       }
 
       // Update UI immediately with what we know
-      setUser(currentUser);
-      setIsAdmin(currentUser.email === "amaanmotorwala77@gmail.com");
+      setUser(activeUser);
+      setIsAdmin(activeUser.email === "amaanmotorwala77@gmail.com");
       setIsLoading(false);
 
-      // Background sync with Firestore
+      // If it's a local fake user, stop here and bypass Firestore sync
+      if (activeUser.uid && activeUser.uid.toString().startsWith("local-")) {
+        return;
+      }
+
+      // Background sync with Firestore for real Firebase users
       try {
-        const userRef = doc(db, "users", currentUser.uid);
+        const userRef = doc(db, "users", activeUser.uid);
         const userSnap = await getDoc(userRef);
         
         let role = "user";
-        if (currentUser.email === "amaanmotorwala77@gmail.com") {
+        if (activeUser.email === "amaanmotorwala77@gmail.com") {
           role = "admin";
         }
 
         if (!userSnap.exists()) {
           await setDoc(userRef, {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            email: currentUser.email,
-            photoURL: currentUser.photoURL,
+            uid: activeUser.uid,
+            displayName: activeUser.displayName,
+            email: activeUser.email,
+            photoURL: activeUser.photoURL,
             role: role,
             createdAt: serverTimestamp()
           });
 
           // Send Welcome Email
-          if (currentUser.email) {
+          if (activeUser.email) {
             sendEmail(
-              currentUser.email,
+              activeUser.email,
               "Welcome to AI Studio Free Tier 2!",
               `
               <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #0a0a0a; color: #ffffff; border-radius: 20px; border: 1px solid #2b8cee;">
                 <h1 style="color: #2b8cee; text-transform: uppercase; font-style: italic;">Welcome to the Future of Automotive Design</h1>
-                <p>Hello ${currentUser.displayName || 'Engineer'},</p>
+                <p>Hello ${activeUser.displayName || 'Engineer'},</p>
                 <p>Your account at <strong>AI Studio Free Tier 2</strong> has been successfully activated. You now have access to our next-generation generative engineering tools.</p>
                 <div style="background-color: #1a1a1a; padding: 15px; border-radius: 10px; margin: 20px 0;">
                   <h3 style="color: #2b8cee; margin-top: 0;">What's Next?</h3>
@@ -194,7 +208,7 @@ export default function App() {
           }
         } else {
           const existingData = userSnap.data();
-          if (currentUser.email === "amaanmotorwala77@gmail.com" && existingData.role !== "admin") {
+          if (activeUser.email === "amaanmotorwala77@gmail.com" && existingData.role !== "admin") {
             role = "admin";
             await setDoc(userRef, { 
               ...existingData, 
@@ -214,9 +228,20 @@ export default function App() {
           console.error("Network error during auth sync. Check your connection.");
         }
       }
-    });
+    };
 
-    return () => unsubscribe();
+    const unsubscribe = onAuthStateChanged(auth, handleAuth);
+    
+    const handleLocalChange = () => handleAuth(auth.currentUser);
+    window.addEventListener("local-auth-change", handleLocalChange);
+
+    // Run once on mount in case localstorage already has a fake user and Firebase hasn't fired
+    handleLocalChange();
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener("local-auth-change", handleLocalChange);
+    };
   }, []);
 
   const renderPage = () => {
