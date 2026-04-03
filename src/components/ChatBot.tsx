@@ -73,7 +73,7 @@ export default function ChatBot({ hasKey, onSelectKey }: ChatBotProps) {
         try {
           lastApiKeyRef.current = apiKey;
             chatRef.current = ai.chats.create({
-              model: "gemini-1.5-flash",
+              model: "gemini-2.5-flash",
               config: {
                 systemInstruction: "You are an AI Studio Specialist, an expert in high-end automotive modifications. You help users with technical questions about BMW F90 conversions, i20 projects, ECU tuning, bespoke interiors, and performance engineering. Be professional, technical, and enthusiastic about cars. If users ask about pricing or specific quotes, refer them to the Configurator or Contact page. Keep your responses concise and focused on automotive excellence.",
               },
@@ -116,11 +116,14 @@ export default function ChatBot({ hasKey, onSelectKey }: ChatBotProps) {
       }
     } catch (error: any) {
       console.error("Chat error:", error);
-      if (error?.message?.includes("Requested entity was not found")) {
+      const errMsg = error?.message || error?.toString() || "";
+      if (errMsg.includes("Requested entity was not found") || errMsg.includes("403") || errMsg.includes("401") || errMsg.includes("API key not valid")) {
         setMessages(prev => [...prev, { role: "model", text: "Your API key session has expired or is invalid. Please click 'Select Key' again to refresh your session." }]);
         onSelectKey(); // Try to re-open selection
+      } else if (errMsg.includes("429") || errMsg.includes("Quota")) {
+        setMessages(prev => [...prev, { role: "model", text: "Usage quota exceeded. Please wait a moment or check your API key billings." }]);
       } else {
-        setMessages(prev => [...prev, { role: "model", text: "Technical error encountered. Please check your connection or try again later." }]);
+        setMessages(prev => [...prev, { role: "model", text: `Technical error: ${errMsg || "Unknown error"}. Please try again later.` }]);
       }
     } finally {
       setIsLoading(false);
