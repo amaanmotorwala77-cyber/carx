@@ -29,7 +29,13 @@ export default function Header({ onNavigate, currentPage, user, isAdmin, hasKey,
 
   const handleLogout = async () => {
     try {
+      // Clear real Firebase
       await signOut(auth);
+      
+      // Clear local bypass
+      localStorage.removeItem("carx_mock_user");
+      window.dispatchEvent(new Event("local-auth-change"));
+      
       onNavigate("home");
     } catch (error) {
       console.error("Logout error:", error);
